@@ -2,7 +2,14 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
+    <PackageId>ydk.fscat</PackageId>
+    <Version>1.0.3</Version>
+    <Authors>Yannick de Kercadio</Authors>
+    <Description>Tool that concatenates all source files of F# project into one source file.</Description>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>fscat</ToolCommandName>
+    <PackageOutputPath>./nupkg</PackageOutputPath>
   </PropertyGroup>
 
   <ItemGroup>

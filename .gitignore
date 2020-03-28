@@ -8,6 +8,7 @@
 *.suo
 bin/
 obj/
+nupkg/
 .vs/
 packages/
 *.user

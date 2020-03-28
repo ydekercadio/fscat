@@ -33,31 +33,36 @@ let fsSourceFilesFromProj (fsprojPath: string) =
     |> List.choose fullPathToSourceFile
 
 (* Copy the contents of the file to the writer, adding the indentation before each line *)
-let appendFile (indentation: string) (writer: StreamWriter) (fullPath: string) =
+let appendFile (skipLines: int) (indentation: string) (writer: StreamWriter) (fullPath: string) =
     let copyLine (line: string) =
         writer.Write(indentation)
         writer.WriteLine(line)
 
     File.ReadAllLines(fullPath)
-    |> Array.iter copyLine
+    |> Array.toSeq
+    |> Seq.skip skipLines
+    |> Seq.iter copyLine
 
 (* Process a module file *)
 let indentFile (writer: StreamWriter) (sourceFile: SourceFile) =
     writer.WriteLine(sprintf "module %s =" sourceFile.moduleName)
-    appendFile "    " writer sourceFile.fullPath
+    appendFile 1 "    " writer sourceFile.fullPath
     writer.WriteLine()
 
 (* Process the last file (main): simple copy *)
 let copyFile (writer: StreamWriter) (sourceFile: SourceFile) =
-    appendFile "" writer sourceFile.fullPath
+    appendFile 0 "" writer sourceFile.fullPath
 
 (* Concats the files and write them to outputFileName *)
 let combineFiles (outputFileName: string) (sourceFiles: SourceFile list) =
     use writer = new StreamWriter(outputFileName)
     let nbFiles = List.length sourceFiles
 
+    if nbFiles = 0
+    then failwith "No F# source found"
+
     (* Add the module statement and indent *)
-    List.take (nbFiles - 2) sourceFiles |> List.iter (indentFile writer)
+    List.take (nbFiles - 1) sourceFiles |> List.iter (indentFile writer)
 
     (* Last file (main file, such as Program.fs): appends without any change *)
     copyFile writer sourceFiles.[nbFiles - 1]

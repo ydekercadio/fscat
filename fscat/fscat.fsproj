@@ -10,6 +10,10 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>fscat</ToolCommandName>
     <PackageOutputPath>./nupkg</PackageOutputPath>
+    <PackageLicenseExpression>MS-PL</PackageLicenseExpression>
+    <projectUrl>https://github.com/ydekercadio/fscat</projectUrl>
+    <repositoryUrl>https://github.com/ydekercadio/fscat</repositoryUrl>
+    <repositoryType>Git</repositoryType>
   </PropertyGroup>
 
   <ItemGroup>
